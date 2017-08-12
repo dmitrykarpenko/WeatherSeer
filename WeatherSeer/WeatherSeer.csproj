@@ -126,6 +126,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ForecastController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Dtos\Enums\ForecastFetchStatus.cs" />
     <Compile Include="Dtos\ForecastPageDto.cs" />
     <Compile Include="Dtos\OwForecast.cs" />
     <Compile Include="Global.asax.cs">

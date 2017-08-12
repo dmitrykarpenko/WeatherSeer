@@ -11,6 +11,8 @@ namespace WeatherSeer.Utils
     {
         #region Const
 
+        // "The cities' IDs can be found in the following file: http://bulk.openweathermap.org/sample/city.list.json.gz ..."
+        // from which the example cities are taken
         private const string citiesJson = @"
             [
               {
@@ -58,14 +60,24 @@ namespace WeatherSeer.Utils
                   'lat': 44.599998
                 }
               },
+              {
+                'id': 703448,
+                'name': 'Kiev',
+                'country': 'UA',
+                'coord': {
+                  'lon': 30.516666,
+                  'lat': 50.433334
+                }
+              },
             ]
         ";
 
         #endregion
 
+        private static IEnumerable<OwCity> cities = null;
         public static IEnumerable<OwCity> GetCities()
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<OwCity>>(citiesJson);
+            return cities ?? (cities = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<OwCity>>(citiesJson));
         }
     }
 }

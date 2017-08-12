@@ -20,15 +20,36 @@ namespace WeatherSeer.Dtos
 
         #region Custom
 
-        public DateTime FetchUtc { get; set; }
+        // not null if this was fetched froh the API (not from the cache)
+        public DateTime? FetchUtc { get; set; }
 
-        public IEnumerable<OwCity> CityOptions { get; set; }
+        // next time the API will be available to respond (in 10 minutes for a free account)
+        public DateTime AvailableFetchUtc { get; set; }
+
+        public string AvailableFetchStr
+        {
+            get
+            {
+                var now = DateTime.UtcNow;
+                if (AvailableFetchUtc > now)
+                {
+                    var span = AvailableFetchUtc - now;
+                    return string.Format("in {0} minutes {1} seconds", span.Minutes, span.Seconds);
+                }
+                else
+                {
+                    return "now";
+                }
+            }
+        }
 
         #endregion
     }
 
     public class OwMain
     {
+        #region Json
+
         public double temp { get; set; }
         public double temp_min { get; set; }
         public double temp_max { get; set; }
@@ -37,6 +58,20 @@ namespace WeatherSeer.Dtos
         public double grnd_level { get; set; }
         public int humidity { get; set; }
         public double temp_kf { get; set; }
+
+        #endregion
+
+        #region MyRegion
+
+        public string TempStr
+        {
+            get
+            {
+                return (int)(temp - 273.15) + " °C";
+            }
+        }
+
+        #endregion
     }
 
     public class OwWeather
@@ -90,6 +125,14 @@ namespace WeatherSeer.Dtos
             get
             {
                 return new DateTime(1970, 1, 1).AddSeconds(dt);
+            }
+        }
+
+        public DayOfWeek DayOfWeek
+        {
+            get
+            {
+                return UnixDt.DayOfWeek;
             }
         }
 

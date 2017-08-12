@@ -2,20 +2,27 @@
     <fieldset>
         <legend>City</legend>
         <div class="form-group row">
-            <div  class="col-sm-2 control-label">
+            <div ng-if="forecast.city" class="col-sm-2 control-label">
                 <label for="name">{{ forecast.city.name }}</label>
                 <div>{{ forecast.city.coord.lat }}, {{ forecast.city.coord.lon }}</div>
+            </div>
+            <div ng-if="!forecast.city" class="col-sm-2 control-label">
+                <label for="name">Select a city from the drop-down</label>
             </div>
             <div class="col-sm-4">
                 <select name="city" id="city" class="form-control"
                         ng-model="forecast.city"
-                        ng-options="co.name for co in forecast.cityOptions"></select>
+                        ng-change='getForecast(forecast.city.id)'
+                        ng-options="co.name for co in cityOptions"></select>
+            </div>
+            <div class="col-sm-2">
+                <div>Next available API request: {{ forecast.AvailableFetchStr }}</div>
             </div>
         </div>
-        <div class="row">
-            <div ng-repeat="item in forecast.list" class="col-sm-2">
+        <div ng-if="forecast.list && forecast.list.length > 0" class="row">
+            <div ng-repeat="item in forecast.list" class="col-sm-2 well well-sm">
                 <div>{{ item.dt_txt }}</div>
-                <div>{{ item.main.temp }} K</div>
+                <div>{{ item.main.TempStr }}</div>
             </div>
         </div>
     </fieldset>

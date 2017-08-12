@@ -1,11 +1,17 @@
 ﻿'use strict';
 
 weatherSeerApp.controller('fpController',
-    ['$scope', 'fpService', function fpController($scope, fpService) {
-        $scope.forecast = fpService.forecast;
+    ['$scope', '$timeout', 'fpService', function fpController($scope, $timeout, fpService) {
+        $scope.getForecast = function (owCityId) {
+            fpService.getForecast(owCityId)
+                .then(function (result) {
+                    $scope.forecast = result.data;
+                });
+        };
+        $scope.getForecast();
 
-        fpService.getForecast($scope.forecast.city.id)
+        fpService.getCityOptions()
             .then(function (result) {
-                var data = result.data;
+                $scope.cityOptions = result.data;
             });
     }]);

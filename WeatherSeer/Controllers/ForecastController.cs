@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WeatherSeer.Logic;
+using WeatherSeer.Utils;
 
 namespace WeatherSeer.Controllers
 {
@@ -16,10 +17,16 @@ namespace WeatherSeer.Controllers
             forecastLogic = new ForecastLogic();
         }
 
-        public ActionResult GetForecastPageData(int owCityId)
+        public ActionResult GetForecastPageData(int? owCityId)
         {
             var forecast = forecastLogic.GetForecastPageData(owCityId);
             return Json(forecast, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetCityOptions()
+        {
+            var options = OpenWeatherUtil.GetCities();
+            return Json(options, JsonRequestBehavior.AllowGet);
         }
     }
 }

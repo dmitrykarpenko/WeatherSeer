@@ -14,6 +14,10 @@ namespace WeatherSeer.Logic
 {
     public class ForecastLogic
     {
+        // restriction is taken from http://openweathermap.org/appid , "Access limitation"
+        const int minutesBetweenRequests = 10;
+        //const int defaultOwCityId = 703448; // Kiev
+
         private string apiUrlTemplate;
         private HttpClient httpClient;
 
@@ -23,35 +27,46 @@ namespace WeatherSeer.Logic
             httpClient = new HttpClient();
         }
 
-        public OwForecast GetForecastPageData(int owCityId)
+        public OwForecast GetForecastPageData(int? owCityId = null)
         {
+            //if (!owCityId.HasValue)
+            //{
+            //    owCityId = defaultOwCityId;
+            //}
+
             OwForecast owForecast = null;
 
             var lastFetchUtc = CacheUtil.GetLastFetchUtc();
-            if (!lastFetchUtc.HasValue || lastFetchUtc.Value < DateTime.UtcNow.AddMinutes(-10))
+
+            if (owCityId.HasValue)
             {
-                var apiUrl = string.Format(apiUrlTemplate, owCityId);
-                var result = httpClient.GetAsync(apiUrl).Result;
-
-                if (result.IsSuccessStatusCode)
+                if (!lastFetchUtc.HasValue || lastFetchUtc.Value < DateTime.UtcNow.AddMinutes(-minutesBetweenRequests))
                 {
-                    var resultString = result.Content.ReadAsStringAsync().Result;
-                    owForecast = JsonConvert.DeserializeObject<OwForecast>(resultString);
+                    var apiUrl = string.Format(apiUrlTemplate, owCityId);
+                    var result = httpClient.GetAsync(apiUrl).Result;
 
-                    owForecast.FetchUtc = DateTime.UtcNow;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var resultString = result.Content.ReadAsStringAsync().Result;
+                        owForecast = JsonConvert.DeserializeObject<OwForecast>(resultString);
 
-                    CacheUtil.SaveForecast(owForecast);
+                        lastFetchUtc = owForecast.FetchUtc = DateTime.UtcNow;
+
+                        CacheUtil.SaveForecast(owForecast);
+                    }
+                }
+                else
+                {
+                    owForecast = CacheUtil.GetForecast(owCityId.Value);
                 }
             }
-            else
+
+            if (owForecast == null)
             {
-                owForecast = CacheUtil.GetForecast(owCityId);
+                owForecast = new OwForecast();
             }
 
-            if (owForecast != null)
-            {
-                owForecast.CityOptions = OpenWeatherUtil.GetCities();
-            }
+            owForecast.AvailableFetchUtc = lastFetchUtc.HasValue ? lastFetchUtc.Value.AddMinutes(minutesBetweenRequests) : DateTime.UtcNow;
 
             return owForecast;
         }

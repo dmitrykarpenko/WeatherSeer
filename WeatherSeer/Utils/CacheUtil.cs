@@ -45,8 +45,8 @@ namespace WeatherSeer.Utils
             try
             {
 
-                forecast.list = forecast.list.OrderByDescending(x => x.dt).ToList();
-                var minDt = forecast.list.Last().dt;
+                forecast.list = forecast.list.OrderBy(x => x.dt).ToList();
+                var minDt = forecast.list.First().dt;
 
                 OwForecast cachedForecast = forecasts.TryGetValue(forecast.city.id, out cachedForecast) ? cachedForecast : null;
 
@@ -55,7 +55,8 @@ namespace WeatherSeer.Utils
                     cachedForecast.list = cachedForecast.list.Where(x => x.dt < minDt).ToList();
 
                     // add two ordered collections - get ordered as a result
-                    forecast.list.AddRange(cachedForecast.list);
+                    cachedForecast.list.AddRange(forecast.list);
+                    forecast.list = cachedForecast.list;
                 }
 
                 var now = DateTime.UtcNow;
