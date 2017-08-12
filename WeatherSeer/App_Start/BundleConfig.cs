@@ -42,7 +42,8 @@ namespace WeatherSeer
 
             #endregion
 
-            BundleTable.EnableOptimizations = true;
+            // set false for debugging
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

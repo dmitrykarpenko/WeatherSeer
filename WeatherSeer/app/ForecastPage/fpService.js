@@ -1,8 +1,12 @@
 ﻿'use strict';
 
 weatherSeerApp.factory('fpService',
-    function fpService() {
+    ["$http", function fpService($http) {
+        function getForecast(owCityId) {
+            return $http.get('/Forecast/GetForecastPageData?owCityId='+owCityId);
+        }
         return {
+            getForecast: getForecast,
             forecast: {
                 "cod": "200",
                 "message": 0.0036,
@@ -222,4 +226,4 @@ weatherSeerApp.factory('fpService',
                 ]
             },
         }
-    });
+    }]);
