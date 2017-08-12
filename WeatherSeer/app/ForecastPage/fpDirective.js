@@ -4,6 +4,6 @@ weatherSeerApp.directive('forecastPage', // would be translated into snake-case 
     function () {
         return {
             restrict: 'E',
-            templateUrl: 'app/ForecastPage/fpTemplate.html'
+            templateUrl: '/app/ForecastPage/fpTemplate.html'
         };
     });
