@@ -5,8 +5,14 @@
 	<meta charset="utf-8" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <script src="Scripts/angular.min.js"></script>
+    <script src="app/WeatherSeerApp.js"></script>
+    <script src="app/ForecastPage/fpController.js"></script>
+    <script src="app/ForecastPage/fpDirective.js"></script>
+    <script src="app/ForecastPage/fpService.js"></script>
 </head>
-<body>
-
+<body ng-app="weatherSeerApp" class="container">
+    <div ng-controller="fpController">
+        <forecast-page />
+    </div>
 </body>
 </html>

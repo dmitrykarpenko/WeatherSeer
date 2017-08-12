@@ -1,9 +1,14 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>fpTemplate</title>
-</head>
-<body>
-    
-</body>
-</html>
+﻿<div>
+    <fieldset>
+        <legend>City</legend>
+        <div class="form-group">
+            <label for="name" class="col-sm-3 control-label">{{ forecast.city.name }}</label>
+            <div class="col-sm-9">
+                <select name="city" id="city" class="form-control"
+                        ng-model="forecast.city"
+                        ng-options="co.name for co in forecast.cityOptions"></select>
+            </div>
+            <span>{{ forecast.city.coord.lat }}, {{ forecast.city.coord.lon }}</span>
+        </div>
+    </fieldset>
+</div>
