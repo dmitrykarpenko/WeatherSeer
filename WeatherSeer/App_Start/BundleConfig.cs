@@ -41,6 +41,8 @@ namespace WeatherSeer
                       "~/app/ForecastPage/fpService.js"));
 
             #endregion
+
+            BundleTable.EnableOptimizations = true;
         }
     }
 }
