@@ -2,17 +2,17 @@
     <fieldset>
         <legend>City</legend>
         <div class="form-group row">
-            <div ng-if="forecast.city" class="col-sm-2 control-label">
-                <label for="name">{{ forecast.city.name }}</label>
-                <div>{{ forecast.city.coord.lat }}, {{ forecast.city.coord.lon }}</div>
+            <div ng-if="selectedCity" class="col-sm-2 control-label">
+                <label for="name">{{ selectedCity.name }}</label>
+                <div>{{ selectedCity.coord.lat }}, {{ selectedCity.coord.lon }}</div>
             </div>
-            <div ng-if="!forecast.city" class="col-sm-2 control-label">
+            <div ng-if="!selectedCity" class="col-sm-2 control-label">
                 <label for="name">Select a city from the drop-down</label>
             </div>
             <div class="col-sm-4">
                 <select name="city" id="city" class="form-control"
-                        ng-model="forecast.city"
-                        ng-change='getForecast(forecast.city.id)'
+                        ng-model="selectedCity"
+                        ng-change='getForecast(selectedCity.id)'
                         ng-options="co.name for co in cityOptions"></select>
             </div>
             <div class="col-sm-2">
