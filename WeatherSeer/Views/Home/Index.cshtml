@@ -11,6 +11,11 @@
     <meta charset="utf-8" />
     @Styles.Render("~/bundles/custom/style")
     @Scripts.Render("~/bundles/custom/script")
+    <script>
+        Context = {};
+        Context.GetForecastPageDataUrl = '@Url.Action("GetForecastPageData", "Home")';
+        Context.GetCityOptionsUrl = '@Url.Action("GetCityOptions", "Home")';
+    </script>
 </head>
 <body ng-app="weatherSeerApp" class="container">
     <div ng-controller="fpController">
